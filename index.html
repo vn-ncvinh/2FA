@@ -83,7 +83,7 @@
     var hotp = new jsOTP.hotp();
 
     function updatSecret() {
-      secret = document.getElementById("secret").value;
+      secret = document.getElementById("secret").value.replaceAll(" ", "");
       totp = new jsOTP.totp();
       code = totp.getOtp(secret);
       hotp = new jsOTP.hotp();
