@@ -25,7 +25,7 @@
     input[type=text] {
       font-size: 100%;
       width: 100%;
-      padding: 12px 20px;
+      padding: 10px 20px;
       margin: 8px 0;
       box-sizing: border-box;
       border: 2px solid;
@@ -42,7 +42,6 @@
       width: 100%;
       padding: 20px;
     }
-
   </style>
 </head>
 
@@ -63,30 +62,23 @@
     <br>
     <br>
     <br>
-    <p>&copy; 2021  by NCV</p>
+    <p>&copy; 2021 by NCV</p>
   </div>
 
 
 
   <script src="js/jsOTP.min.js"></script>
   <script>
+    var totp = new jsOTP.totp();
+    var secret = document.getElementById("secret").value;
 
     function copyText() {
       var copyText = totp.getOtp(secret);
       navigator.clipboard.writeText(copyText);
     }
-
-    var secret = document.getElementById("secret").value;
-
-    var totp = new jsOTP.totp();
-    var code = totp.getOtp(secret);
-    var hotp = new jsOTP.hotp();
-
+    
     function updatSecret() {
       secret = document.getElementById("secret").value.replaceAll(" ", "");
-      totp = new jsOTP.totp();
-      code = totp.getOtp(secret);
-      hotp = new jsOTP.hotp();
       updateTotp(secret, $('#code-1'));
     }
 
