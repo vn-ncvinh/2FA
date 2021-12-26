@@ -2,47 +2,8 @@
 
 <head>
   <title>Get 2FA Code</title>
-  <style>
-    body {
-      padding-top: 5%;
-      margin: 0 auto;
-      font-family: Tahoma, Verdana, Arial, sans-serif;
-      background-color: whitesmoke;
-      width: 80%;
-    }
-
-    h1 {
-      font-size: 40px;
-    }
-
-    .content {
-      max-width: 500px;
-      margin: auto;
-      font-size: 20px;
-      text-align: center;
-    }
-
-    input[type=text] {
-      font-size: 100%;
-      width: 100%;
-      padding: 10px 20px;
-      margin: 8px 0;
-      box-sizing: border-box;
-      border: 2px solid;
-      border-radius: 4px;
-      text-align: center;
-    }
-
-    #ticker {
-      font-size: 10px;
-      text-align: left;
-    }
-
-    progress {
-      width: 100%;
-      padding: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/otp.css">
+  <script src="js/jsOTP.min.js"></script>
 </head>
 
 <body>
@@ -55,19 +16,7 @@
     <p id="ticker">Expires later: time second</p>
     <progress id="timecountdown" value="22" max="30"></progress>
   </div>
-  <div class="footer">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <p>&copy; 2021 by NCV</p>
-  </div>
 
-
-
-  <script src="js/jsOTP.min.js"></script>
   <script>
     var totp = new jsOTP.totp();
     var secret = document.getElementById("secret").value;
@@ -76,38 +25,37 @@
       var copyText = totp.getOtp(secret);
       navigator.clipboard.writeText(copyText);
     }
-    
+
     function updatSecret() {
       secret = document.getElementById("secret").value.replaceAll(" ", "");
-      updateTotp(secret, $('#code-1'));
+      updateTotp();
     }
 
-    $ = function (sel) {
-      return document.querySelector(sel);
-    };
-
-
-    var updateTicker = function (tick, el) {
-      el.innerText = "Expires later: " + tick + " second";
+    function updateTicker(tick) {
+      document.getElementById("ticker").innerText = "Expires later: " + tick + " second";
 
     }
-    var updateTotp = function (secret, el) {
-      el.innerText = totp.getOtp(secret);
+
+    function updateTotp() {
+      document.getElementById("code-1").innerText = totp.getOtp(secret);
     }
 
-    updateTotp(secret, $('#code-1'));
+    updateTotp();
 
-    var timeLoop = function () {
+    function timeLoop() {
       var epoch = Math.round(new Date().getTime() / 1000.0);
       var countDown = 30 - (epoch % 30);
       document.getElementById("timecountdown").value = 30 - countDown;
-      updateTicker(countDown, $('#ticker'));
-      if (epoch % 30 == 0) updateTotp(secret, $('#code-1'));
+      updateTicker(countDown);
+      if (epoch % 30 == 0) updateTotp();
     }
 
     setInterval(timeLoop, 1000);
 
   </script>
 </body>
+<footer>
+  <p>&copy; 2021 by NCV</p>
+</footer>
 
 </html>
